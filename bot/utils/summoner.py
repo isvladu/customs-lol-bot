@@ -3,7 +3,7 @@ from typing import Tuple
 
 import requests
 
-from ..configuration.config import cfg
+from bot.configuration.config import cfg
 
 
 class Summoner:

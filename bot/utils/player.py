@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from role import Role
+from bot.utils.role import Role
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,8 @@
 from typing import Optional
 
-from connection import Connection
+from bot.database.connection import Connection
 
-from ..utils.player import Player
+from bot.utils.player import Player
 
 
 class PlayerConnection(Connection):

@@ -1,6 +1,6 @@
 import pymongo
 
-from ..configuration.config import cfg
+from bot.configuration.config import cfg
 
 class Connection:
     """

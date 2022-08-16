@@ -1,6 +1,6 @@
 import logging
 
-from customs_bot.customs_bot import CustomsBot
+from bot.customs_bot import CustomsBot
 
 if __name__ == '__main__':
     logger = logging
