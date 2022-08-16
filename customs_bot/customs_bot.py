@@ -2,6 +2,7 @@ import logging
 
 import discord
 from discord.ext import commands
+
 from configuration.config import cfg
 
 intents = discord.Intents.default()
@@ -14,7 +15,8 @@ class CustomsBot(commands.Bot):
     """
 
     def __init__(self, **options):
-        super().__init__(cfg.PREFIX, intents=intents, case_insensitive=True, **options)
+        super().__init__(cfg["app"]["prefix"],
+                         intents=intents, case_insensitive=True, **options)
 
         self.logger = logging.getLogger(__name__)
 
@@ -22,4 +24,4 @@ class CustomsBot(commands.Bot):
         self.logger.info(f"Logged in as {self.user}")
 
     def run(self, *args, **kwargs):
-        super().run(cfg.TOKEN, *args, **kwargs)
+        super().run(cfg["app"]["token"], *args, **kwargs)
