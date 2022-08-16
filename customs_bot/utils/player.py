@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from role import Role, RoleIsInvalid
+from role import Role
 
 logger = logging.getLogger(__name__)
 
@@ -32,34 +32,31 @@ class Player:
             return self.id == other.id
         return False
 
-    def __name__(self, other):
+    def __ne__(self, other):
         return not self.__eq__(other)
 
     def addRole(self, role: str):
-        validated_role = Role.validateRole(role)
-        if validated_role == Role.INVALID:
-            logger.error(f"Role {role} is invalid")
-            raise RoleIsInvalid(role)
-        if validated_role in self.roles:
-            logger.error(f"Role {validated_role.name} is already registered")
+        """Adds a role to the role list of the player.
+
+        Args:
+            role (str): Singular role to be added
+        """        
+        if role in self.roles:
+            logger.error(f"Role {role.name} is already registered")
             return
-        logger.info(f"Role {validated_role.name} has been registered")
-        self.roles.append(validated_role)
+        logger.info(f"Role {role.name} has been registered")
+        self.roles.append(role)
 
     def addRoles(self, role_list: list[str]):
         for role in role_list:
             self.addRole(role)
 
     def removeRole(self, role: str):
-        validated_role = Role.validateRole(role)
-        if validated_role == Role.INVALID:
-            logger.error(f"Role {role} is invalid")
-            raise RoleIsInvalid(role)
-        if validated_role not in self.roles:
-            logger.error(f"Role {validated_role.name} is not registered")
+        if role not in self.roles:
+            logger.error(f"Role {role.name} is not registered")
             return
-        logger.info(f"Role {validated_role} has been removed")
-        self.roles.remove(validated_role)
+        logger.info(f"Role {role} has been removed")
+        self.roles.remove(role)
 
     def removeRoles(self, role_list: list[str]):
         for role in role_list:
