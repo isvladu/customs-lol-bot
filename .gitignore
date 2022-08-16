@@ -1,2 +1,7 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Virtual environment and configuration file
 /customs_bot_venv
 /customs_bot/configuration/config.yml
