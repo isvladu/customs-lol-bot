@@ -4,4 +4,4 @@ __pycache__/
 
 # Virtual environment and configuration file
 /customs_bot_venv
-/customs_bot/configuration/config.yml
+/bot/configuration/config.yml
