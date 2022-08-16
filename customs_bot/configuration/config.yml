@@ -1,7 +1,0 @@
-app:
-  prefix: "!"
-  token: OTcyMDg2MjExNzkzNTI2ODE0.YnT71Q.xhxPugL-AlwYWKOykhH6lHG6QUA
-database:
-  token: mongodb+srv://admin:eedin1234A%2F%2Fb@scrimbotdatabase.jfwoa.mongodb.net/scrimbot?retryWrites=true
-riot:
-  token: RGAPI-f5694d45-18a9-4d9a-8950-e065fdedd8d6
