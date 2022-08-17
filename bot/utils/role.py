@@ -5,8 +5,8 @@ class Role(Enum):
     """
     Enumeration implementation of the valid roles.
     """
-    top = "Top"
-    jgl = "Jungle"
-    mid = "Mid"
-    bot = "Bot"
-    sup = "Support"
+    TOP = "Top"
+    JUNGLE = "Jungle"
+    MID = "Mid"
+    BOT = "Bot"
+    SUPPORT = "Support"

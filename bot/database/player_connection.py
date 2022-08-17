@@ -15,7 +15,7 @@ class PlayerConnection(Connection):
         self.table = super().getCollection("players")
 
     @staticmethod
-    def decode_player(document) -> Optional[Player]:
+    def decodePlayer(document) -> Optional[Player]:
         """Decodes the BSON document that a MongoDB query returns into a Player object.
 
         Args:
@@ -39,7 +39,7 @@ class PlayerConnection(Connection):
         Returns:
             Optional[Player]: Player object if the player was found, else None
         """
-        return self.decode_player(self.table.find_one({"_id": unique_id}))
+        return self.decodePlayer(self.table.find_one({"_id": unique_id}))
 
     def insertPlayer(self, player: Player):
         """Inserts a player into the database.
@@ -56,7 +56,7 @@ class PlayerConnection(Connection):
             player (Player): Player to be updated in the database.
         """
         query = {"_id": player.id}
-        values = {"$set": {"roles": player.getRoles(), "elo": player.elo,
+        values = {"$set": {"roles": player.roles, "elo": player.elo,
                            "summoner_name": player.summoner_name}}
 
         self.table.update_one(query, values)

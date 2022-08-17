@@ -4,7 +4,6 @@ import discord
 from discord.ext import commands
 
 from bot.configuration.config import cfg
-from bot.views.register_button_view import RegisterButtonView
 
 intents = discord.Intents.default()
 intents.members = True
@@ -27,14 +26,6 @@ class CustomsBot(commands.Bot):
 
     async def on_ready(self):
         self.logger.info(f"Logged in as {self.user}")
-
-        embed = discord.Embed(title=f"Test registration embed",
-                              description=f"Test description", colour=discord.Colour.blue())
-        channel_id = cfg["app"]["reg_chan_id"]
-        channel = self.get_channel(int(channel_id))
-        self.logger.info(f"{channel} - {int(channel_id)}")
-
-        await channel.send(embed=embed, view=RegisterButtonView())
 
     def run(self, *args, **kwargs):
         super().run(cfg["app"]["token"], *args, **kwargs)

@@ -15,12 +15,13 @@ class Summoner:
     summoner_name: str
     timer: int
 
-    account_endpoint: str = "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/"
-    mmr_endpoint: str = "https://euw.whatismymmr.com/api/v1/summoner?name="
-    icon_url: str = "https://ddragon.leagueoflegends.com/cdn/12.9.1/img/profileicon/"
+    account_endpoint: str = "https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/"
+    ranked_endpoint: str = "https://eun1.api.riotgames.com/lol/league/v4/entries/by-summoner/"
+    mmr_endpoint: str = "https://eune.whatismymmr.com/api/v1/summoner?name="
+    icon_url: str = "images/profile_icons/"
 
     def __init__(self, summoner_name: str):
-        self.icon_id = random.randint(0, 5)
+        self.icon_id = random.randint(1, 10)
         self.summoner_name = summoner_name
         self.headers = {"X-Riot-Token": cfg["riot"]["token"]}
         self.timer = 30
@@ -44,6 +45,9 @@ class Summoner:
         r = requests.get(url=url, headers=self.headers)
 
         return r.json()["profileIconId"]
+    
+    def getSummonerRank(self) -> str:
+        pass
 
     def validateSummoner(self) -> bool:
         """Validates if the assigned summoner icon matches the one the summoner has.
@@ -62,8 +66,10 @@ class Summoner:
         url = self.mmr_endpoint + self.summoner_name
 
         r = requests.get(url=url)
-
-        if r.json()["ranked"]["warn"] is True:
+        
+        if "error" in r.json().keys():
             return 1000, 0
         else:
             return r.json()["ranked"]["avg"], r.json()["ranked"]["err"]
+        
+    #TODO: refactor this class to contain methods to get ProfileIcon, RankedTier and return proper URLS and filenames.
