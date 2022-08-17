@@ -1,5 +1,5 @@
 import random
-from typing import Tuple
+from typing import Tuple, Dict
 
 import requests
 
@@ -13,6 +13,7 @@ class Summoner:
 
     icon_id: int
     summoner_name: str
+    headers: Dict[str, str]
     timer: int
 
     account_endpoint: str = "https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/"
@@ -25,6 +26,7 @@ class Summoner:
         self.summoner_name = summoner_name
         self.headers = {"X-Riot-Token": cfg["riot"]["token"]}
         self.timer = 30
+        self.rank = self.getSummonerTier()
 
     def getSummonerIconURL(self) -> str:
         """Returns the url for the summoner icon.
@@ -46,8 +48,29 @@ class Summoner:
 
         return r.json()["profileIconId"]
     
-    def getSummonerRank(self) -> str:
-        pass
+    @staticmethod
+    def getSummonerTierURL(rank: str) -> str:
+        """Returns the url for the tier icon.
+
+        Returns:
+            str: Rank of the player
+        """        
+        return "images/tiers/" + str(rank) + ".png"
+    
+    def getSummonerTier(self) -> str:
+        """Returns the tier of the summoner.
+
+        Returns:
+            str: The tier to be returned
+        """        
+        acc_id = requests.get(url=self.account_endpoint+self.summoner_name, headers=self.headers).json()["id"]
+        rank_data = requests.get(url=self.ranked_endpoint+acc_id, headers=self.headers).json()
+        
+        for queue in rank_data:
+            if queue["queueType"] == "RANKED_SOLO_5x5":
+                return queue["tier"]
+        
+        return "BRONZE"
 
     def validateSummoner(self) -> bool:
         """Validates if the assigned summoner icon matches the one the summoner has.
@@ -72,4 +95,3 @@ class Summoner:
         else:
             return r.json()["ranked"]["avg"], r.json()["ranked"]["err"]
         
-    #TODO: refactor this class to contain methods to get ProfileIcon, RankedTier and return proper URLS and filenames.

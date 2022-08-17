@@ -11,16 +11,20 @@ class Player:
 
     _id: int
     _name: str
-    roles: List[str]
-    elo: float
     summoner_name: str
+    rank: str
+    elo: int
+    wins: int
+    losses: int
 
-    def __init__(self, _id: int, name: str, roles: List[str] = None, elo: float = None, summoner_name: str = None):
+    def __init__(self, _id: int, name: str, summoner_name: str = None, rank: str = None, elo: int = None, wins: int = 0, losses: int = 0):
         self._id = _id
         self._name = name
-        self.roles = roles
-        self.elo = elo
         self.summoner_name = summoner_name
+        self.rank = rank
+        self.elo = elo
+        self.wins = wins
+        self.losses = losses
 
     def __eq__(self, other):
         if isinstance(other, Player):
@@ -37,13 +41,12 @@ class Player:
     @property
     def name(self):
         return self._name
-    
-    def isValid(self):
-        if self.roles is not None and self.summoner_name is not None and self.elo is not None:
-            return True
-        return False
 
-    # Encoding Player() object for MongoDB queries
+    def isValid(self):
+        return self.summoner_name is not None
+
+    # Encoding Player object for MongoDB queries
     def encode_player(self):
-        return {"_id": self._id, "name": self._name, "roles": self.roles, "elo": self.elo,
-                "summoner_name": self.summoner_name}
+        return {"_id": self._id, "name": self._name, "summoner_name": self.summoner_name,
+                "rank": self.rank, "elo": self.elo, "wins": self.wins, "losses": self.losses
+                }

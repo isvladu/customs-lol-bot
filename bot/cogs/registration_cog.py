@@ -27,6 +27,5 @@ class RegistrationCog(commands.Cog):
                               description=f"Test description", colour=discord.Colour.blue())
         channel_id = int(cfg["app"]["reg_chan_id"])
         channel = self.bot.get_channel(channel_id)
-        await channel.send(f"<:TOP:1009461817032048741>")
 
         await channel.send(embed=embed, view=RegisterButtonView(self.connection))
