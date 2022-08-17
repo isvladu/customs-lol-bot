@@ -12,34 +12,38 @@ from discord.ui import View
 class RegisterButtonView(View):
     def __init__(self, connection: PlayerConnection):
         super().__init__(timeout=None)
+        
         self.connection = connection
         self.roles = None
         self.summoner_name = None
         self.elo = None
         self.rank = None
-        # summonerButton = discord.ui.Button(label="Test link", style=discord.ButtonStyle.link, url="https://discord.com/channels/975367601771388968/1009218791911215205")
-        # self.add_item(summonerButton)
 
-    @discord.ui.button(label="Register", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="REGISTER", style=discord.ButtonStyle.primary)
     async def summoner_button_callback(self, button, interaction):
+        if interaction.user.get_role(int(cfg["app"]["member_role_id"])) is not None:
+            for child in self.children:
+                child.disabled = True
+                child.style = discord.ButtonStyle.danger
+            embed = discord.Embed(title=f"Summoner Registration",
+                              description=f"You are already registered!", colour=discord.Colour.dark_grey())
+            await interaction.response.edit_message(embed=embed, view=self)
+            return
+            
         modal = SummonerModal()
-        view = RolesSelectView()
-
         await interaction.response.send_modal(modal)
-        # await interaction.followup.send("Please fill in your roles below (min 1, max 5).", view=view, ephemeral=True)
-
         await modal.wait()
 
         self.summoner_name = modal.summoner_name
         self.elo = modal.elo
         self.rank = modal.rank
-
-    @discord.ui.button(label="Verify", style=discord.ButtonStyle.primary)
+        
+    @discord.ui.button(label="VERIFY", style=discord.ButtonStyle.primary)
     async def verify_button_callback(self, button, interaction):
         current_player = Player(_id=interaction.user.id, name=interaction.user.name,
                                 summoner_name=self.summoner_name, rank=self.rank, elo=self.elo, wins=0, losses=0)
 
-        if current_player.isValid():
+        if current_player.isValid() and interaction.user.get_role(int(cfg["app"]["member_role_id"])) is None:
             file = discord.File(Summoner.getSummonerTierURL(
                 rank=current_player.rank), filename=f"{current_player.rank}.png")
 
@@ -54,6 +58,13 @@ class RegisterButtonView(View):
 
             await interaction.response.send_message(file=file, embed=embed, view=ValidateButtonView(player=current_player, connection=self.connection), ephemeral=True)
         elif interaction.user.get_role(int(cfg["app"]["member_role_id"])) is not None:
-            await interaction.response.send_message("You are already registered!", ephemeral=True)
+            for child in self.children:
+                child.disabled = True
+                child.style = discord.ButtonStyle.danger
+            embed = discord.Embed(title=f"Summoner Registration",
+                              description=f"You are already registered!", colour=discord.Colour.dark_grey())
+            await interaction.response.edit_message(embed=embed, view=self)
         else:
-            await interaction.response.send_message("Please click the register button first to proceed!", ephemeral=True)
+            embed = discord.Embed(title=f"Summoner Registration",
+                              description=f"Please click the registration button first!", colour=discord.Colour.dark_grey())
+            await interaction.response.edit_message(embed=embed, view=self)

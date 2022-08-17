@@ -21,11 +21,15 @@ class CustomsBot(commands.Bot):
         self.logger = logging.getLogger(__name__)
 
         from bot.cogs.registration_cog import RegistrationCog
+        from bot.cogs.queue_cog import QueueCog
 
         self.add_cog(RegistrationCog(self))
+        self.add_cog(QueueCog(self))
 
     async def on_ready(self):
         self.logger.info(f"Logged in as {self.user}")
 
     def run(self, *args, **kwargs):
         super().run(cfg["app"]["token"], *args, **kwargs)
+
+# TODO: create slash commands to initiliaze the registration and queue

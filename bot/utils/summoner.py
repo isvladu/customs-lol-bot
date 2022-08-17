@@ -91,7 +91,7 @@ class Summoner:
         r = requests.get(url=url)
         
         if "error" in r.json().keys():
-            return 1000, 0
+            return 1500, 0
         else:
             return r.json()["ranked"]["avg"], r.json()["ranked"]["err"]
         

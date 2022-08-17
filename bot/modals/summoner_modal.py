@@ -10,7 +10,6 @@ from bot.utils.summoner import Summoner
 class SummonerModal(Modal):
     def __init__(self) -> None:
         super().__init__(title="Summoner Registration Modal")
-        self.is_summoner_set = False
         self.summoner_name = None
         self.elo = None
         self.rank = None

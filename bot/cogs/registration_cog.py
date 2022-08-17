@@ -7,6 +7,7 @@ from bot.database.player_connection import PlayerConnection
 from bot.views.register_button_view import RegisterButtonView
 from discord.ext import commands
 from discord.ui import Modal
+from discord.commands import slash_command
 
 
 class RegistrationCog(commands.Cog):
@@ -23,9 +24,9 @@ class RegistrationCog(commands.Cog):
     async def on_ready(self):
         self.logger.info(f"Registration cog is ready!")
 
-        embed = discord.Embed(title=f"Test registration embed",
-                              description=f"Test description", colour=discord.Colour.blue())
-        channel_id = int(cfg["app"]["reg_chan_id"])
-        channel = self.bot.get_channel(channel_id)
-
-        await channel.send(embed=embed, view=RegisterButtonView(self.connection))
+    @slash_command(guild_ids=[975367601771388968])
+    async def register(self, ctx: commands.Context):
+        embed = discord.Embed(title=f"Summoner Registration",
+                              description=f"Please click the REGISTER button to start the process.", colour=discord.Colour.dark_grey())
+        
+        await ctx.respond(embed=embed, view=RegisterButtonView(self.connection))

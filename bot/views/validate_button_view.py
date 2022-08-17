@@ -11,7 +11,7 @@ class ValidateButtonView(View):
         self.player = player
         self.connection = connection
 
-    @discord.ui.button(label="Confirm", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="CONFIRM", style=discord.ButtonStyle.primary)
     async def confirm_button_callback(self, button, interaction: discord.Interaction):
         self.connection.insertPlayer(self.player)
         role = interaction.guild.get_role(int(cfg["app"]["member_role_id"]))
@@ -19,6 +19,6 @@ class ValidateButtonView(View):
         await interaction.user.add_roles(role)
         await interaction.response.send_message("You have succesfully registered!", ephemeral=True)
 
-    @discord.ui.button(label="Cancel", style=discord.ButtonStyle.danger)
+    @discord.ui.button(label="CANCEL", style=discord.ButtonStyle.danger)
     async def cancel_button_callback(self, button, interaction):
         await interaction.response.send_message("You have canceled the registration!", ephemeral=True)
